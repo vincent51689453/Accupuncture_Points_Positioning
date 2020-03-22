@@ -206,6 +206,21 @@ def main():
 			cv2.circle(raw_image,(x_shift,mid_2),5,(178,102,255),-1)
 			cv2.putText(raw_image,"1",(x_shift+10,mid_2-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(178,102,255), 1, cv2.LINE_AA)
 
+		if(i == 5):
+			y = int(h1_m*x_shift+h1_c)
+			cv2.circle(raw_image,(x_shift,y),5,(178,102,255),-1)
+			cv2.putText(raw_image,"8",(x_shift+10,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(178,102,255), 1, cv2.LINE_AA)			
+			
+		if(i == 9):
+			y = int(h_m*x_shift+h_c)
+			cv2.circle(raw_image,(x_shift,y),5,(178,102,255),-1)
+			cv2.putText(raw_image,"6",(x_shift+10,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(178,102,255), 1, cv2.LINE_AA)	
+
+		if(i == 11):
+			y = int(h1_m*x_shift+h1_c)
+			cv2.circle(raw_image,(x_shift,y),5,(178,102,255),-1)
+			cv2.putText(raw_image,"7",(x_shift+10,y-10),cv2.FONT_HERSHEY_SIMPLEX,0.5,(178,102,255), 1, cv2.LINE_AA)			
+
 		if(i == 12):
 			y = int(h1_m*x_shift+h1_c)
 			cv2.circle(raw_image,(x_shift,y),5,(178,102,255),-1)
