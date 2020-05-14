@@ -1,15 +1,17 @@
 import numpy as np
 import cv2
 import linear_solver as linear
-#LEFT HAND VERSION
+# LEFT HAND VERSION
 
 HSV_image = None
+
 
 def load_image():
 	image_path = "./test_imgs/capture_5.jpg"
 	img = cv2.imread(image_path)
 	print("Image Dimensions: Height = {} and Widht = {} ".format(img.shape[0],img.shape[1]))
 	return img
+
 
 def input_AI_zoom(input_image):
 	x_min = input("AI->left = ")
@@ -24,17 +26,16 @@ def input_AI_zoom(input_image):
 	#x_max = 976
 	#y_min = 78
 	#y_max = 554
-	cv2.rectangle(input_image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+	cv2.rectangle(input_image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 1)
 	return x_min,y_min,x_max,y_max
 
-	
 
 def fit_forearm_alpha(input_image,x_min,y_min,y_max):
 	hsv_image = cv2.cvtColor(input_image,cv2.COLOR_BGR2HSV)
 	#Get (y_min,x_min) HSV values
 	#+20 is offset. Otherwise, it is detecting the rectangle box
 	x_min = x_min+20
-	y_min = y_min+20
+	y_min = y_min+10
 	backup_y = y_min
 	pixel = hsv_image[y_min,x_min]
 	#print("Origin HSV:",pixel)
@@ -57,12 +58,13 @@ def fit_forearm_alpha(input_image,x_min,y_min,y_max):
 	#cv2.imshow("Detector",input_image)
 	return input_image,x_min,y_min
 
+
 def fit_forearm_beta(input_image,x_min,y_min,y_max):
 	hsv_image = cv2.cvtColor(input_image,cv2.COLOR_BGR2HSV)
 	#Get (y_max,x_min) HSV values
 	#20 is offset. Otherwise, it is detecting the rectangle box
 	x_min = x_min+20
-	y_max = y_max-20
+	y_max = y_max-10
 	backup_y = y_max
 	pixel = hsv_image[y_max,x_min]
 	#print("Origin HSV:",pixel)
@@ -90,7 +92,7 @@ def fit_forearm_gamma(input_image,x_max,y_min,y_max):
 	#Get (y_max,x_min) HSV values
 	#20 is offset. Otherwise, it is detecting the rectangle box
 	x_max = x_max-20
-	y_min = y_min+20
+	y_min = y_min+10
 	pixel = hsv_image[y_min,x_max]
 	backup_y = y_min
 	#print("Origin HSV:",pixel)
@@ -119,7 +121,7 @@ def fit_forearm_delta(input_image,x_max,y_min,y_max):
 	#Get (y_max,x_min) HSV values
 	#20 is offset. Otherwise, it is detecting the rectangle box
 	x_max = x_max-20
-	y_max = y_max-20
+	y_max = y_max-10
 	backup_y = y_max
 	pixel = hsv_image[y_max,x_max]
 	#print("Origin HSV:",pixel)
@@ -168,7 +170,7 @@ def main():
 	mid_gamma_delta_x = int((gamma_x+delta_x)/2)
 	mid_gamma_delta_y = int((gamma_y+delta_y)/2)
 	#Horizontal Plane
-	cv2.line(raw_image,(mid_alpha_beta_x,mid_alpha_beta_y),(mid_gamma_delta_x,mid_gamma_delta_y),(255,255,0),2)
+	cv2.line(raw_image,(mid_alpha_beta_x,mid_alpha_beta_y),(mid_gamma_delta_x,mid_gamma_delta_y),(153,255,255),2)
 	#Equation (y = mx + c)
 	h_m,h_c = linear.linear_equation_solver(mid_alpha_beta_x,mid_alpha_beta_y,mid_gamma_delta_x,mid_gamma_delta_y)
 	
@@ -176,14 +178,14 @@ def main():
 	#+1/2 and -1/2 of horizontal plane
 	mid_1 = int((mid_alpha_beta_y+alpha_y)/2)
 	mid_1_end = int((mid_gamma_delta_y+gamma_y)/2)
-	cv2.line(raw_image,(alpha_x,mid_1),(delta_x,mid_1_end),(204,204,0),2)
+	cv2.line(raw_image,(alpha_x,mid_1),(delta_x,mid_1_end),(153,255,255),2)
 	#Equation (y = mx + c)
 	h1_m,h1_c = linear.linear_equation_solver(alpha_x,mid_1,delta_x,mid_1_end)
 
 
 	mid_2 = int((mid_alpha_beta_y+beta_y)/2)
 	mid_2_end = int((mid_gamma_delta_y+delta_y)/2)
-	cv2.line(raw_image,(alpha_x,mid_2),(delta_x,mid_2_end),(204,204,0),2)
+	cv2.line(raw_image,(alpha_x,mid_2),(delta_x,mid_2_end),(153,255,255),2)
 	#Equation (y = mx + c)
 	h2_m,h2_c = linear.linear_equation_solver(alpha_x,mid_2,delta_x,mid_2_end)
 
